@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
@@ -52,7 +53,7 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             parent=self.styles['Heading2'],
             fontSize=int(13 * scale_factor),
             spaceAfter=int(10 * scale_factor),
-            textColor=colors.HexColor('#4FC3F7'),  # Light blue for accent
+            textColor=colors.HexColor('#4FC3F7'),
             alignment=TA_LEFT,
             fontName='Helvetica-Bold',
             leading=int(15 * scale_factor),
@@ -87,7 +88,7 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             parent=self.styles['Heading2'],
             fontSize=int(16 * scale_factor),
             spaceAfter=int(12 * scale_factor),
-            textColor=colors.HexColor('#1976D2'),  # Deeper blue for main headings
+            textColor=colors.HexColor('#1976D2'),
             spaceBefore=int(12 * scale_factor),
             fontName='Helvetica-Bold',
             leading=int(18 * scale_factor),
@@ -98,43 +99,21 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             'MainNormal',
             parent=self.styles['Normal'],
             fontSize=int(10 * scale_factor),
-            textColor=colors.HexColor('#424242'),  # Dark grey for better readability
+            textColor=colors.HexColor('#424242'),
             spaceAfter=int(6 * scale_factor),
             leading=int(14 * scale_factor),
             fontName='Helvetica',
             alignment=TA_JUSTIFY
         )
 
-        job_title_style = ParagraphStyle(
-            'JobTitle',
+        main_subheading_style = ParagraphStyle(
+            'MainSubheading',
             parent=self.styles['Normal'],
             fontSize=int(12 * scale_factor),
-            textColor=colors.HexColor('#1976D2'),  # Matching blue for job titles
+            textColor=colors.HexColor('#1976D2'),
             spaceAfter=int(2 * scale_factor),
             fontName='Helvetica-Bold',
             leading=int(14 * scale_factor),
-            letterSpacing=0.5
-        )
-
-        company_style = ParagraphStyle(
-            'Company',
-            parent=self.styles['Normal'],
-            fontSize=int(11 * scale_factor),
-            textColor=colors.HexColor('#424242'),
-            spaceAfter=int(2 * scale_factor),
-            leading=int(13 * scale_factor),
-            fontName='Helvetica-Bold'
-        )
-        
-        date_style = ParagraphStyle(
-            'DateStyle',
-            parent=self.styles['Normal'],
-            fontSize=int(9 * scale_factor),
-            textColor=colors.HexColor('#757575'),  # Medium grey for dates
-            alignment=TA_LEFT,
-            leading=int(11 * scale_factor),
-            spaceAfter=int(8 * scale_factor),
-            fontName='Helvetica-Light',
             letterSpacing=0.5
         )
         
@@ -142,7 +121,7 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             'SkillCategory',
             parent=self.styles['Normal'],
             fontSize=int(10 * scale_factor),
-            textColor=colors.HexColor('#4FC3F7'),  # Light blue for skill categories
+            textColor=colors.HexColor('#4FC3F7'),
             alignment=TA_LEFT,
             fontName='Helvetica-Bold',
             spaceBefore=int(8 * scale_factor),
@@ -154,7 +133,7 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             'SkillLevel',
             parent=self.styles['Normal'],
             fontSize=int(9 * scale_factor),
-            textColor=colors.HexColor('#E0E0E0'),  # Light grey for skills
+            textColor=colors.HexColor('#E0E0E0'),
             alignment=TA_LEFT,
             spaceAfter=int(2 * scale_factor),
             leading=int(11 * scale_factor),
@@ -170,9 +149,7 @@ class ModernTwoColumnTemplate(ResumeTemplate):
             'contact': contact_style,
             'main_heading': main_heading_style,
             'main_normal': main_normal_style,
-            'job_title': job_title_style,
-            'company': company_style,
-            'date': date_style,
+            'main_subheading': main_subheading_style,
             'skill_category': skill_category_style,
             'skill_level': skill_level_style
         }
@@ -268,16 +245,17 @@ class ClassicTemplate(ResumeTemplate):
             spaceAfter=10,
             textColor=colors.black,
             spaceBefore=15,
-            underline=True
+            borderWidth=0.5,
+            borderPadding=5,
+            borderColor=colors.black
         )
         
         normal_style = ParagraphStyle(
             'CustomNormal',
             parent=self.styles['Normal'],
-            fontSize=11,
+            fontSize=10,
             textColor=colors.black,
-            spaceAfter=6,
-            alignment=TA_JUSTIFY
+            spaceAfter=6
         )
         
         return {
@@ -293,8 +271,8 @@ class ProfessionalATSTemplate(ResumeTemplate):
             'CustomTitle',
             parent=self.styles['Heading1'],
             fontSize=20,
-            spaceAfter=25,
-            textColor=colors.HexColor('#2E4053'),
+            spaceAfter=20,
+            textColor=colors.HexColor('#2c3e50'),
             alignment=TA_CENTER
         )
         
@@ -302,22 +280,20 @@ class ProfessionalATSTemplate(ResumeTemplate):
             'CustomHeading',
             parent=self.styles['Heading2'],
             fontSize=13,
-            spaceAfter=12,
-            textColor=colors.HexColor('#34495E'),
+            spaceAfter=10,
+            textColor=colors.HexColor('#34495e'),
             spaceBefore=15,
-            borderColor=colors.HexColor('#BDC3C7'),
+            borderColor=colors.HexColor('#bdc3c7'),
             borderWidth=0.5,
-            borderPadding=6,
-            backColor=colors.HexColor('#EBEDEF')
+            borderPadding=5
         )
         
         normal_style = ParagraphStyle(
             'CustomNormal',
             parent=self.styles['Normal'],
-            fontSize=11,
+            fontSize=10,
             textColor=colors.black,
-            spaceAfter=8,
-            leading=14
+            spaceAfter=6
         )
         
         return {
@@ -327,16 +303,15 @@ class ProfessionalATSTemplate(ResumeTemplate):
         }
 
 def get_template(template_name: str) -> ResumeTemplate:
+    """
+    Factory function to get the appropriate resume template
+    """
     templates = {
-        'ats_friendly': ATSFriendlyTemplate,
-        'modern_ats': ModernATSTemplate,
-        'classic': ClassicTemplate,
-        'professional_ats': ProfessionalATSTemplate,
-        'modern_two_column': ModernTwoColumnTemplate
+        'modern_two_column': ModernTwoColumnTemplate(),
+        'ats_friendly': ATSFriendlyTemplate(),
+        'modern_ats': ModernATSTemplate(),
+        'classic': ClassicTemplate(),
+        'professional_ats': ProfessionalATSTemplate()
     }
     
-    template_class = templates.get(template_name)
-    if not template_class:
-        raise ValueError(f"Template '{template_name}' not found")
-    
-    return template_class() 
+    return templates.get(template_name, ATSFriendlyTemplate()) 
